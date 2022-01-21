@@ -1,0 +1,52 @@
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10px; /* set rems */
+  box-sizing: border-box;
+}
+#root,
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: #151320;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 7rem;
+}
+h2 {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 7rem;
+}
+h3 {
+  font-size: 3.75rem;
+  font-weight: 500;
+}
+h4 {
+  font-size: 2.8rem;
+  font-weight: 400;
+  line-height: 3.5rem;
+}
+h5 {
+  font-size: 2.5rem;
+  font-weight: 200;
+  line-height: 3.5rem;
+}
+p {
+  font-size: 1.7rem;
+  font-weight: 300;
+  line-height: 2.5rem;
+}

@@ -1,0 +1,153 @@
+@import '../../variables.scss';
+
+a {
+  cursor: pointer;
+  &.disabled {
+    cursor: default;
+  }
+  text-decoration: none;
+  transition: all 0.3s ease-out;
+  mat-icon {
+    transition: all 0.3s ease-out;
+  }
+
+  // links
+  &.link-1 {
+    color: $mint;
+    &:hover,
+    &:active,
+    &.active {
+      color: $purple;
+    }
+    &.disabled {
+      color: $grey;
+    }
+  }
+  &.link-2 {
+    color: $purple;
+    &:hover,
+    &:active,
+    &.active {
+      color: $mint;
+    }
+    &.disabled {
+      color: $grey;
+    }
+  }
+  &.link-3 {
+    color: $white;
+    &:hover,
+    &:active,
+    &.active {
+      color: $purple;
+    }
+    &.disabled {
+      color: $grey;
+    }
+  }
+  &.nav-link {
+    color: $white;
+    font-weight: 200;
+    &.animated:after {
+      display: block;
+      content: '';
+      height: 0.5rem;
+      border-bottom: 0.2rem solid $mint;
+      transform: scaleX(0);
+      transition: all 0.3s ease-in-out;
+    }
+    &.animated:hover:after,
+    &.active:after {
+      transform: scaleX(1);
+    }
+    &.disabled {
+      color: $grey;
+    }
+  }
+  // buttons
+  &.btn-outline {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    color: $mint;
+    border: 0.1rem solid $mint;
+    border-radius: 0.5rem;
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+    &:hover,
+    &:active,
+    &.active {
+      color: $purple;
+      border: 0.1rem solid $purple;
+      mat-icon {
+        color: $purple;
+      }
+    }
+    &.disabled {
+      color: $grey;
+      border: 0.1rem solid $grey;
+    }
+  }
+  &.btn-filled-1 {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    color: $black2;
+    background: $mint;
+    border: 0.1rem solid transparent;
+    border-radius: 0.5rem;
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+    &:hover,
+    &:active,
+    &.active {
+      background: transparent;
+      color: $mint;
+      border: 0.1rem solid $mint;
+    }
+    &.disabled {
+      background: $grey;
+      color: $black2;
+      border: 0.1rem solid $grey;
+    }
+  }
+  &.btn-filled-2 {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    color: $black2;
+    background: $mint;
+    border: 0.1rem solid transparent;
+    border-radius: 0.5rem;
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+    &:hover,
+    &:active,
+    &.active {
+      background: $purple;
+    }
+    &.disabled {
+      background: $grey;
+      color: $black2;
+      border: 0.1rem solid $grey;
+    }
+  }
+  &.tab {
+    padding: 1rem 1rem 1rem 2rem;
+    color: $grey;
+    border-left: 2px solid $black2;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    &:hover {
+      background: rgba(138, 255, 128, 0.1);
+    }
+    &:active,
+    &.active {
+      color: $mint;
+      border-left: 2px solid $mint;
+    }
+  }
+}
