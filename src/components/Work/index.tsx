@@ -23,8 +23,8 @@ export function Work() {
       position: 'Frontend Developer',
       dateRange: 'June 2021 - Present',
       info: [
-        'Creating the future of FinTech banking.',
-        'Responsible for the development of core features, including accounts, customers, users, groups, roles, and permissions.',
+        'Feature leader and subject-matter expert on complex features, including accounts, customers, users, groups, roles, and permissions. Provides support to colleagues in areas of technical expertise.',
+        'Actively collaborate with product team and participate in cross-pod design activities.',
         'Integrated with various internal APIs via React hooks.',
         'Co-lead creation of developer documentation platform, leveraging OpenAPI specification.',
         'Technologies utilized: React, Typescript, Tailwind, MUI.',
