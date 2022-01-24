@@ -8,6 +8,10 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const openClass = menuOpen && 'open';
 
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView();
+  };
+
   return (
     <header className="w-full flex flex-col justify-center items-center">
       <div className="header-container flex justify-between items-center">
@@ -16,18 +20,18 @@ export function Header() {
         </div>
         <div className="hidden items-end md:flex">
           <Link
-            href="#about"
             type="nav-link"
             classes="animated ml-16"
             fontSize={1.6}
+            onClick={() => scrollTo('about')}
           >
             about
           </Link>
           <Link
-            href="#work"
             type="nav-link"
             classes="animated ml-16"
             fontSize={1.6}
+            onClick={() => scrollTo('work')}
           >
             work
           </Link>
@@ -52,10 +56,20 @@ export function Header() {
             openClass
           )}
         >
-          <Link href="#about" type="nav-link" classes="py-5" fontSize={1.6}>
+          <Link
+            type="nav-link"
+            classes="py-5"
+            fontSize={1.6}
+            onClick={() => scrollTo('about')}
+          >
             about
           </Link>
-          <Link href="#work" type="nav-link" classes="py-5" fontSize={1.6}>
+          <Link
+            type="nav-link"
+            classes="py-5"
+            fontSize={1.6}
+            onClick={() => scrollTo('work')}
+          >
             work
           </Link>
           <Link href="" type="nav-link" classes="py-5" fontSize={1.6}>
