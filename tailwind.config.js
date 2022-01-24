@@ -1,10 +1,9 @@
 const { colors } = require('./src/components/colors');
 
 module.exports = {
-  content: [],
+  content: ['./src/**/*.{ts,tsx}', './public/index.html'],
   theme: {
     colors,
   },
   plugins: [],
-  purge: ['./src/**/*.{ts,tsx}', './public/index.html'],
 };
