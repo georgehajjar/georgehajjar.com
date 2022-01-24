@@ -72,7 +72,7 @@ export function About() {
             </div>
           </div>
           <div className="col-span-2 h-full flex justify-center items-center relative">
-            <img src={memoji} className="w-full" />
+            <img src={memoji} className="w-full" alt="memoji" />
           </div>
         </div>
       </div>

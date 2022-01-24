@@ -57,7 +57,7 @@ export function Landing() {
         <div className="w-70 text-white">
           <div className="flex flex-col justify-start relative">
             <FadeIn delay={300} transitionDuration={1000}>
-              <img className="dots" src={dots} />
+              <img className="dots" src={dots} alt="dots" />
               <h1 className="mb-20">
                 hey, I'm george. &#129304;&#127996;&#128760;
               </h1>
