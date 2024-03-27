@@ -1,20 +1,4 @@
-@import '../../variables.scss';
-
-header {
-  border-bottom: 1px solid $black2;
-  background: $black1;
-  .header-container {
-    height: 8rem;
-    width: 70%;
-    img {
-      height: 6rem;
-    }
-    .name {
-      font-size: 2.2rem;
-      margin-left: 1rem;
-    }
-  }
-}
+@import "../../variables.scss";
 
 .hamburger {
   width: 3rem;

@@ -1,4 +1,6 @@
-import { About, Footer, Header, Landing, Work } from './components';
+import { Footer, Header } from './components';
+import { Landing, About, Work } from './views';
+import './styles.scss';
 
 export default function App() {
   return (
