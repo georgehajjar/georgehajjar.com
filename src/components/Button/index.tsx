@@ -1,43 +1,78 @@
-import { ReactNode } from "react";
-import classNames from "classnames";
-import "./styles.scss";
+import type { MouseEvent, ReactNode } from 'react';
+import { cn } from '../../lib/cn';
 
-type ButtonType =
-  | "link-1"
-  | "link-2"
-  | "link-3"
-  | "nav-link"
-  | "btn-outline"
-  | "btn-filled-1"
-  | "btn-filled-2"
-  | "tab";
+type Variant = 'ghost' | 'link' | 'nav';
+type Size = 'sm' | 'lg';
 
-interface LinkProps {
-  type: ButtonType;
-  href?: string;
+const base =
+  'group inline-flex items-center justify-center gap-2 font-medium transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mint/60 focus-visible:ring-offset-2 focus-visible:ring-offset-ink';
+
+const sizeStyles: Record<Size, string> = {
+  sm: 'px-3.5 py-1.5 text-xs',
+  lg: 'px-5 py-2.5 text-sm',
+};
+
+const variants: Record<Variant, string> = {
+  ghost:
+    'rounded-full border border-white/15 bg-white/[0.02] text-white/90 hover:border-mint/60 hover:text-mint',
+  link: 'text-mint hover:text-purple underline-offset-4 hover:underline',
+  nav: 'relative text-sm font-normal text-white/70 hover:text-white after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-center after:scale-x-0 after:bg-mint after:transition-transform after:duration-300 hover:after:scale-x-100',
+};
+
+const isPill = (v: Variant) => v === 'ghost';
+
+type Props = {
+  variant?: Variant;
+  size?: Size;
   className?: string;
-  fontSize?: number;
   children?: ReactNode;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement> | undefined;
-}
+  /** Present → renders <a>. Absent → renders <button>. */
+  href?: string;
+  /** If unset, inferred from an http(s) href — external links open in a new tab. */
+  external?: boolean;
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
+  disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  role?: string;
+  title?: string;
+  'aria-label'?: string;
+  'aria-selected'?: boolean;
+  'aria-disabled'?: boolean;
+  'aria-expanded'?: boolean;
+  'aria-haspopup'?: boolean | 'menu' | 'listbox' | 'dialog';
+};
 
 export function Button({
-  type,
-  href,
+  variant = 'ghost',
+  size = 'sm',
   className,
-  fontSize,
   children,
-  onClick,
-}: LinkProps) {
+  href,
+  external,
+  ...rest
+}: Props) {
+  const classes = cn(
+    base,
+    variants[variant],
+    isPill(variant) && sizeStyles[size],
+    className,
+  );
+
+  if (href !== undefined) {
+    const isExternal = external ?? /^https?:\/\//.test(href);
+    const targetProps = isExternal
+      ? { target: '_blank' as const, rel: 'noreferrer' as const }
+      : {};
+    return (
+      <a href={href} className={classes} {...targetProps} {...rest}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <a
-      href={href}
-      className={classNames(type, className)}
-      style={{ fontSize: `${fontSize}rem` }}
-      onClick={onClick}
-      target={href && "_blank"}
-    >
+    <button type="button" className={classes} {...rest}>
       {children}
-    </a>
+    </button>
   );
 }

@@ -1,52 +1,48 @@
-/* @tailwind base; */
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-* {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 10px; /* set rems */
-  box-sizing: border-box;
+@theme {
+  --color-ink: #0a0a0f;
+  --color-surface: #12121a;
+  --color-mint: #8aff80;
+  --color-purple: #7e64ff;
+
+  --font-display:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui,
+    sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui,
+    sans-serif;
 }
-#root,
-html,
-body {
-  height: 100%;
-  width: 100%;
-}
+
 html {
   scroll-behavior: smooth;
 }
+
 body {
-  background: #151320;
+  background: var(--color-ink);
+  color: rgb(255 255 255 / 0.9);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1 {
-  font-size: 6rem;
-  font-weight: 700;
-  line-height: 7rem;
+::selection {
+  background: color-mix(in oklab, var(--color-mint) 40%, transparent);
+  color: white;
 }
-h2 {
-  font-size: 5rem;
-  font-weight: 700;
-  line-height: 7rem;
+
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
 }
-h3 {
-  font-size: 3.75rem;
-  font-weight: 500;
-}
-h4 {
-  font-size: 2.8rem;
-  font-weight: 400;
-  line-height: 3.5rem;
-}
-h5 {
-  font-size: 2.5rem;
-  font-weight: 200;
-  line-height: 3.5rem;
-}
-p {
-  font-size: 1.7rem;
-  font-weight: 300;
-  line-height: 2.5rem;
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

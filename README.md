@@ -1,29 +1,29 @@
 My personal website hosted on [georgehajjar.com](https://georgehajjar.com/)
 
-## Available Scripts
+## Stack
 
-## [Yarn:](https://classic.yarnpkg.com/en/docs/cli/)
+Vite · React 19 · TypeScript 5 · Tailwind CSS 4 · Motion · Firebase Hosting
 
-### `yarn start`
+## Scripts
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+yarn install
+yarn dev        # dev server at http://localhost:5173
+yarn build      # type-check + production build → build/
+yarn preview    # serve the production build locally
+yarn typecheck  # tsc --noEmit
+```
 
-### `yarn build`
+## Deploy
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+CI/CD is handled by GitHub Actions:
 
-## [Firebase:](https://firebase.google.com/docs/cli)
+- `.github/workflows/firebase-hosting-merge.yml` — deploys `main` to the live channel on push.
+- `.github/workflows/firebase-hosting-pull-request.yml` — builds a preview channel for each PR.
 
-### `firebase login`
+To deploy manually:
 
-Log into Firebase using Google account.
-
-### `firebase init`
-
-Initialize project directory and some Firebase products.
-
-### `firebase deploy`
-
-Deploy to a Firebase project.
+```bash
+firebase login
+firebase deploy
+```

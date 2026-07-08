@@ -1,126 +1,228 @@
-import { useState } from "react";
-import FadeIn from "react-fade-in";
-import classNames from "classnames";
-import { Button } from "../../components";
+import { useState } from 'react';
+import { motion } from 'motion/react';
+import {
+  Button,
+  Card,
+  CardTitle,
+  Divider,
+  ExternalArrow,
+  Meta,
+  Pill,
+  SectionTitle,
+} from '../../components';
+import { Reveal } from '../../lib/motion';
+import { cn } from '../../lib/cn';
+import { workplaces } from './data';
 
-interface Workplace {
-  id: number;
-  company: string;
-  website?: string;
-  position: string;
-  dateRange: string;
-  info: string[];
+const stackDescriptions: Record<string, string> = {
+  React: 'component-based UI',
+  TypeScript: 'type-safe javascript',
+  Angular: 'component framework',
+  Swift: 'Apple native mobile',
+  iOS: 'Apple mobile platform',
+  'REST APIs': 'backend integration',
+  'RESTful APIs': 'backend integration',
+  AWS: 'cloud infrastructure',
+  'Design Systems': 'shared components + tokens',
+  'QA Automation': 'automated testing',
+  Web: 'web platform',
+};
+
+const HIGHLIGHT_PATTERNS = [
+  // Numbers with weight — currency, percentages
+  `~?\\$\\d+(?:\\.\\d+)?[KM]?\\+?`,
+  `\\d+(?:\\.\\d+)?%\\+?`,
+  // Tech / stack terms
+  `\\b(?:React|TypeScript|Typescript|Angular|Swift|AWS|iOS|Android|Node|JavaScript|RESTful APIs|REST APIs)\\b`,
+  // Signature roles / phrases
+  `\\b(?:Frontend authority|Feature leader|Lead iOS developer|subject-matter expert)\\b`,
+];
+
+const HIGHLIGHT_RE = new RegExp(
+  `(${HIGHLIGHT_PATTERNS.map((p) => `(?:${p})`).join('|')})`,
+  'g',
+);
+const HIGHLIGHT_TEST = new RegExp(
+  `^(?:${HIGHLIGHT_PATTERNS.map((p) => `(?:${p})`).join('|')})$`,
+);
+
+function HighlightedBullet({ text }: { text: string }) {
+  const parts = text.split(HIGHLIGHT_RE);
+  return (
+    <>
+      {parts.map((part, i) =>
+        HIGHLIGHT_TEST.test(part) ? (
+          <span key={i} className="text-mint font-medium">
+            {part}
+          </span>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
+
+function DateRange({ range }: { range: string }) {
+  if (!range.includes('Present')) return <Meta>{range}</Meta>;
+  const [before, after] = range.split('Present');
+  return (
+    <Meta>
+      {before}
+      <span className="text-mint font-medium">Present</span>
+      {after}
+    </Meta>
+  );
 }
 
 export function Work() {
-  const workplaces: Workplace[] = [
-    {
-      id: 1,
-      company: "Synctera",
-      website: "https://synctera.com/",
-      position: "Sr. Software Engineer, Frontend",
-      dateRange: "June 2021 - March 2024",
-      info: [
-        "Feature leader and subject-matter expert on complex web features. Developed and managed features including: account management, transaction processing (ACH, EFT, fees/rewards, etc.), customer and business management; US-to-Canada expansion; user permissions; geographical restrictions; customer access restrictions; and four-eyes integration.",
-        "Contributed to the improvement of frontend development processes using React and Typescript. Lead the development of standardized utility functions, reducing development time by 35%; introduced global code standards; and created reusable component wrappers.",
-        "Actively collaborated with the product team (product manager, design lead, and technical lead) on all pod-specific features to gather requirements and to create and refine UX.",
-        "Contributed to defining endpoint structures and data schemas in collaboration with backend developers, enhancing frontend-backend alignment. Utilized React hooks to integrate a variety of internal APIs into our web application.",
-        "Provided technical and developmental support to colleagues in areas of expertise. Initiated and maintained weekly communication with team members to foster knowledge-sharing, discuss ongoing projects, and collaborate on addressing technical challenges.",
-      ],
-    },
-    {
-      id: 2,
-      company: "Novisto",
-      website: "https://novisto.com/",
-      position: "Software Engineer, Frontend",
-      dateRange: "June 2020 - June 2021",
-      info: [
-        "Developed a software platform for ESG data management and analytics using Angular and Typescript.",
-        "Responsible for the development of shared/reusable components, responsive experiences (web/mobile​), and unit/end-to-end testing.",
-        "Responsible for the design, development and interfacing of RESTful APIs for application data management.",
-      ],
-    },
-    {
-      id: 3,
-      company: "Intersect",
-      website: "https://www.weareintersect.com/",
-      position: "iOS Developer",
-      dateRange: "May 2019 - Aug 2019 and May 2018 - Aug 2018",
-      info: [
-        "Developed President's Choice Financial iOS application in 2019 using Swift.",
-        "Lead iOS developer on client project in 2018 responsible for delivering a high quality employee benefits application.",
-        "Worked with a cross functional team to understand requirements and recommend appropriate solutions; including Project Managers, Designers, Backend Developers, and QA Analysts.",
-      ],
-    },
-    {
-      id: 5,
-      company: "dubdub",
-      position: "Quality Engineer",
-      dateRange: "May 2017 - Aug 2017",
-      info: [
-        "Lead the initial implementation of automated testing for functional, system, performance/integration and regression testing on web, iOS and android based applications.",
-        "Responsible for testing server side APIs.",
-        "Responsible for stress/load testing on a web based application.",
-      ],
-    },
-  ];
-  const [activeWorkplace, setActiveWorkplace] = useState(
-    workplaces.find((workplace) => workplace.id === 1) ?? undefined,
-  );
+  const [activeId, setActiveId] = useState<number>(workplaces[0].id);
+  const active = workplaces.find((w) => w.id === activeId) ?? workplaces[0];
 
   return (
-    <div
-      className="flex flex-col items-center justify-center bg-black1"
-      id="work"
-    >
-      <div className="flex w-[70%] flex-grow flex-col items-center justify-center py-20">
-        <div className="mb-32 flex w-full items-start justify-start">
-          <h2 className="text-white">work.</h2>
-        </div>
-        <div className="grid w-full grid-cols-1 md:grid-cols-4">
-          <div className="col-span-1 mb-8 flex flex-col pr-8">
-            {workplaces.map((workplace) => {
-              return (
-                <Button
-                  type="tab"
-                  onClick={() => setActiveWorkplace(workplace)}
-                  className={classNames(
-                    activeWorkplace?.id === workplace.id && "active",
-                  )}
-                  fontSize={1.6}
-                  key={workplace.id}
-                >
-                  {workplace.company}
-                </Button>
-              );
-            })}
-          </div>
-          <div className="col-span-3 min-h-[50vh]">
-            <FadeIn delay={300} transitionDuration={1000}>
-              <h4 className="mb-6 text-white">
-                {activeWorkplace?.position} @{" "}
-                {activeWorkplace?.website ? (
-                  <Button
-                    type="link-2"
-                    href={activeWorkplace?.website}
-                    fontSize={2.8}
+    <section id="work" className="bg-ink relative border-t border-white/5">
+      <div className="mx-auto max-w-screen-2xl px-6 py-24 md:px-10 md:py-40">
+        <Reveal>
+          <SectionTitle mb={16} accentPeriod>
+            work
+          </SectionTitle>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
+            <div className="md:col-span-2">
+              <div
+                className="flex overflow-x-auto md:flex-col md:overflow-visible"
+                role="tablist"
+                aria-label="Workplaces"
+              >
+                {workplaces.map((w) => {
+                  const isActive = w.id === activeId;
+                  return (
+                    <button
+                      key={w.id}
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setActiveId(w.id)}
+                      className={cn(
+                        'relative flex items-center gap-3 px-4 py-3 pl-5 text-left text-sm whitespace-nowrap transition-colors',
+                        'border-b border-white/5 md:rounded-lg md:border-b-0',
+                        isActive
+                          ? 'text-mint md:bg-mint/[0.04] font-medium'
+                          : 'text-white/50 hover:text-white/90 md:hover:bg-white/[0.03]',
+                      )}
+                    >
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-0 left-1.5 hidden w-0.5 bg-white/10 md:block"
+                      />
+                      {isActive && (
+                        <motion.span
+                          layoutId="work-tab-indicator"
+                          aria-hidden
+                          className="bg-mint absolute inset-y-0 left-1.5 hidden w-0.5 md:block"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 500,
+                            damping: 35,
+                          }}
+                        />
+                      )}
+                      {w.company}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="md:col-span-10">
+              <div className="min-h-[26rem]">
+                <Card padding="lg">
+                  <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                    <CardTitle>
+                      {active.website ? (
+                        <Button variant="link" href={active.website}>
+                          {active.company}
+                          <ExternalArrow />
+                        </Button>
+                      ) : (
+                        <span className="text-mint">{active.company}</span>
+                      )}
+                    </CardTitle>
+                    {active.location && <Meta>{active.location}</Meta>}
+                  </div>
+
+                  <ul className="mb-6 flex flex-col gap-2">
+                    {active.roles.map((r, i) => (
+                      <li
+                        key={i}
+                        className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-white/5 pb-2 last:border-0"
+                      >
+                        <span className="text-sm text-white/85 md:text-base">
+                          {r.title}
+                        </span>
+                        <DateRange range={r.dateRange} />
+                      </li>
+                    ))}
+                  </ul>
+
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {active.stack.map((s) => (
+                      <Pill
+                        key={s}
+                        variant="tag"
+                        size="sm"
+                        as="li"
+                        tooltip={stackDescriptions[s]}
+                      >
+                        {s}
+                      </Pill>
+                    ))}
+                  </ul>
+
+                  <Divider my={8} />
+
+                  <motion.ul
+                    key={active.id}
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.05,
+                          delayChildren: 0.05,
+                        },
+                      },
+                    }}
+                    className="marker:text-mint ml-5 list-disc space-y-4 text-sm leading-relaxed text-white/70 md:text-base"
                   >
-                    {activeWorkplace?.company}
-                  </Button>
-                ) : (
-                  activeWorkplace?.company
-                )}
-              </h4>
-              <p className="text-grey">{activeWorkplace?.dateRange}</p>
-              <ul className="work w-3/4 list-none space-y-6 py-6 pl-2 text-grey">
-                {activeWorkplace?.info.map((info, idx) => (
-                  <li key={idx}>&nbsp;{info}</li>
-                ))}
-              </ul>
-            </FadeIn>
+                    {active.info.map((info, idx) => (
+                      <motion.li
+                        key={idx}
+                        variants={{
+                          hidden: { opacity: 0, y: 8 },
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              duration: 0.4,
+                              ease: [0.16, 1, 0.3, 1],
+                            },
+                          },
+                        }}
+                        className="pl-2"
+                      >
+                        <HighlightedBullet text={info} />
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </Card>
+              </div>
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
-    </div>
+    </section>
   );
 }

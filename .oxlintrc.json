@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "style": "off",
+    "nursery": "off"
+  },
+  "plugins": ["react", "typescript", "unicorn", "import"],
+  "rules": {
+    "no-unused-vars": "error",
+    "typescript/no-unused-vars": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": "off",
+    "import/no-named-as-default": "off"
+  },
+  "ignorePatterns": ["build", "dist", "node_modules", ".firebase"]
+}

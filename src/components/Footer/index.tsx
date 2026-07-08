@@ -1,16 +1,37 @@
+import { FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { Button } from '../Button';
+
 export function Footer() {
   return (
-    <footer
-      className="w-full flex justify-center items-center bg-black2"
-      style={{ height: '5rem' }}
-    >
-      <div
-        className="h-full flex justify-between items-center"
-        style={{ width: '70%' }}
-      >
-        <div className="text-grey" style={{ fontSize: '1.2rem' }}>
-          {new Date().getFullYear()} &copy; Website by&nbsp;
-          <strong style={{ fontSize: '1.2rem' }}>George Hajjar</strong>
+    <footer className="bg-ink border-t border-white/5">
+      <div className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between px-6 text-sm text-white/40 md:px-10">
+        <div>
+          {new Date().getFullYear()} &copy;{' '}
+          <a
+            href="/stylesheet"
+            className="hover:text-mint underline-offset-4 transition-colors hover:underline"
+          >
+            Website
+          </a>{' '}
+          by <span className="text-white/70">George Hajjar</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            href="https://www.linkedin.com/in/ghajjar/"
+            aria-label="LinkedIn"
+            className="px-2.5"
+          >
+            <FaLinkedinIn className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            href="https://github.com/georgehajjar"
+            aria-label="GitHub"
+            className="px-2.5"
+          >
+            <FaGithub className="h-4 w-4" />
+          </Button>
         </div>
       </div>
     </footer>
