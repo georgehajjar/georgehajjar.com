@@ -120,9 +120,12 @@ export function Header() {
   return (
     <>
       <header
+        aria-hidden={!scrolled}
         className={cn(
-          'fixed inset-x-0 top-0 z-40 border-b border-white/5 backdrop-blur-xl transition-[background-color,box-shadow] duration-300',
-          scrolled ? 'bg-ink/80 shadow-lg shadow-black/20' : 'bg-ink/60',
+          'fixed inset-x-0 top-0 z-40 border-b border-white/5 backdrop-blur-xl transition-[opacity,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          scrolled
+            ? 'bg-ink/80 opacity-100 shadow-lg shadow-black/20'
+            : 'bg-ink/60 pointer-events-none opacity-0',
         )}
       >
         <div
@@ -130,12 +133,7 @@ export function Header() {
           className="bg-mint/70 absolute inset-x-0 top-0 h-px origin-left"
           style={{ transform: `scaleX(${progress})` }}
         />
-        <div
-          className={cn(
-            'mx-auto flex max-w-screen-2xl items-center justify-between px-6 transition-[height] duration-300 md:px-10',
-            scrolled ? 'h-12' : 'h-16',
-          )}
-        >
+        <div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-6 md:px-10">
           <button
             onClick={goHome}
             className="font-display hover:text-mint text-lg font-medium tracking-tight text-white transition-colors"

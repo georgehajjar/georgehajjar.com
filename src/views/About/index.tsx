@@ -1,3 +1,11 @@
+import type { IconType } from 'react-icons';
+import {
+  SiClaude,
+  SiOpencode,
+  SiReact,
+  SiTypescript,
+  SiWindsurf,
+} from 'react-icons/si';
 import memoji from '../../assets/memoji.webp';
 import {
   Body,
@@ -11,12 +19,44 @@ import {
 } from '../../components';
 import { Reveal } from '../../lib/motion';
 
-const technologies: Array<{ label: string; desc: string }> = [
-  { label: 'Claude Code', desc: 'daily coding companion' },
-  { label: 'OpenCode', desc: 'open-source terminal agent' },
-  { label: 'Windsurf', desc: 'AI-first editor' },
-  { label: 'React', desc: 'component-based UI' },
-  { label: 'Typescript', desc: 'type-safe javascript' },
+// Brand hex values from simpleicons.org. OpenCode + Windsurf are monotone
+// (#000) on their brand sheet; inverted to white for legibility on the ink bg.
+const technologies: Array<{
+  label: string;
+  desc: string;
+  Icon: IconType;
+  color: string;
+}> = [
+  {
+    label: 'Claude Code',
+    desc: 'daily coding companion',
+    Icon: SiClaude,
+    color: '#D97757',
+  },
+  {
+    label: 'OpenCode',
+    desc: 'open-source terminal agent',
+    Icon: SiOpencode,
+    color: '#FFFFFF',
+  },
+  {
+    label: 'Windsurf',
+    desc: 'AI-first editor',
+    Icon: SiWindsurf,
+    color: '#FFFFFF',
+  },
+  {
+    label: 'React',
+    desc: 'component-based UI',
+    Icon: SiReact,
+    color: '#61DAFB',
+  },
+  {
+    label: 'Typescript',
+    desc: 'type-safe javascript',
+    Icon: SiTypescript,
+    color: '#3178C6',
+  },
 ];
 
 const hobbies = [
@@ -128,6 +168,11 @@ export function About() {
                 <ul className="flex flex-wrap gap-2">
                   {technologies.map((t) => (
                     <Pill key={t.label} variant="tag" as="li" tooltip={t.desc}>
+                      <t.Icon
+                        aria-hidden
+                        className="h-4 w-4 shrink-0"
+                        style={{ color: t.color }}
+                      />
                       {t.label}
                     </Pill>
                   ))}

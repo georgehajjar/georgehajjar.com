@@ -1,5 +1,6 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { cn } from '../../lib/cn';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
 import type { ISourceOptions } from '@tsparticles/engine';
@@ -93,6 +94,67 @@ const StarField = memo(function StarField() {
 const goToWork = () =>
   document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
 
+const goToAbout = () =>
+  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+
+const ScrollHint = memo(function ScrollHint() {
+  const reduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  const [nearTop, setNearTop] = useState(true);
+
+  useEffect(() => {
+    const t = window.setTimeout(() => setMounted(true), 2400);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setNearTop(window.scrollY < 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const shown = mounted && nearTop;
+
+  return (
+    <motion.button
+      type="button"
+      onClick={goToAbout}
+      aria-label="Scroll to about section"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: shown ? 1 : 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className={cn(
+        'hover:text-mint absolute bottom-8 left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center text-white/40 transition-colors md:bottom-10',
+        !shown && 'pointer-events-none',
+      )}
+    >
+      <motion.svg
+        aria-hidden
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-5 w-5"
+        animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
+        transition={
+          reduceMotion
+            ? undefined
+            : {
+                duration: 1.8,
+                repeat: Infinity,
+                ease: [0.4, 0, 0.6, 1],
+              }
+        }
+      >
+        <path d="M6 9l6 6 6-6" />
+      </motion.svg>
+    </motion.button>
+  );
+});
+
 export function Landing() {
   const reduceMotion = useReducedMotion();
   const [introDone, setIntroDone] = useState(false);
@@ -118,6 +180,7 @@ export function Landing() {
       <StarField />
 
       <section className="relative min-h-screen overflow-hidden">
+        <ScrollHint />
         <div className="relative mx-auto flex min-h-screen max-w-screen-2xl items-center px-6 pb-16 md:px-10 md:pb-24">
           <div className="relative w-full">
             <Display
