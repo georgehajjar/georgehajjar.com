@@ -1,11 +1,3 @@
-import type { IconType } from 'react-icons';
-import {
-  SiClaude,
-  SiOpencode,
-  SiReact,
-  SiTypescript,
-  SiWindsurf,
-} from 'react-icons/si';
 import memoji from '../../assets/memoji.webp';
 import {
   Body,
@@ -18,77 +10,28 @@ import {
   SectionTitle,
 } from '../../components';
 import { Reveal } from '../../lib/motion';
-
-// Brand hex values from simpleicons.org. OpenCode + Windsurf are monotone
-// (#000) on their brand sheet; inverted to white for legibility on the ink bg.
-const technologies: Array<{
-  label: string;
-  desc: string;
-  Icon: IconType;
-  color: string;
-}> = [
-  {
-    label: 'Claude Code',
-    desc: 'daily coding companion',
-    Icon: SiClaude,
-    color: '#D97757',
-  },
-  {
-    label: 'OpenCode',
-    desc: 'open-source terminal agent',
-    Icon: SiOpencode,
-    color: '#FFFFFF',
-  },
-  {
-    label: 'Windsurf',
-    desc: 'AI-first editor',
-    Icon: SiWindsurf,
-    color: '#FFFFFF',
-  },
-  {
-    label: 'React',
-    desc: 'component-based UI',
-    Icon: SiReact,
-    color: '#61DAFB',
-  },
-  {
-    label: 'Typescript',
-    desc: 'type-safe javascript',
-    Icon: SiTypescript,
-    color: '#3178C6',
-  },
-];
-
-const hobbies = [
-  { icon: '🏋️', label: 'Gym' },
-  { icon: '⚽', label: 'Sports' },
-  { icon: '🍽️', label: 'Restaurants' },
-  { icon: '🥘', label: 'Cooking' },
-  { icon: '🌱', label: 'Healthy living' },
-];
+import { hobbies, technologies } from './data';
 
 function ProfileCard() {
   return (
     <div className="sticky top-24">
       <Card rounded="3xl" padding="sm">
-        <div className="mb-5 flex items-center justify-center rounded-2xl bg-white/[0.02] py-6">
+        <div className="bg-fg/[0.02] mb-5 flex items-center justify-center rounded-2xl py-6">
           <img
             src={memoji}
             alt="Memoji of George"
             className="w-40 drop-shadow-2xl md:w-48"
           />
         </div>
-        <div className="font-display text-2xl font-medium text-white">
+        <div className="font-display text-fg text-2xl font-medium">
           George Hajjar
         </div>
-        <div className="mt-1 text-sm text-white/50">
-          Senior Software Engineer
-        </div>
+        <div className="text-fg/50 mt-1 text-sm">Senior Software Engineer</div>
         <Divider my={5} />
         <dl className="flex flex-col gap-2 text-sm">
           <div className="flex h-9 items-center justify-between gap-4">
             <Label as="dt">Specialization</Label>
-            <dd className="text-white/85">Frontend leaning, full-stack</dd>
+            <dd className="text-fg/85">Frontend leaning, full-stack</dd>
           </div>
           <div className="flex h-9 items-center justify-between gap-4">
             <Label as="dt">Based</Label>
@@ -114,26 +57,9 @@ function ProfileCard() {
   );
 }
 
-function HobbyChip({ icon, label }: { icon: string; label: string }) {
-  return (
-    <Pill variant="tag" as="li" className="group">
-      <span
-        aria-hidden
-        className="inline-block transition-transform duration-300 ease-out group-hover:scale-125 group-hover:-rotate-12"
-      >
-        {icon}
-      </span>
-      {label}
-    </Pill>
-  );
-}
-
 export function About() {
   return (
-    <section
-      id="about"
-      className="bg-ink/60 relative border-t border-white/5 backdrop-blur-[2px]"
-    >
+    <section id="about" className="bg-ink border-fg/5 relative border-t">
       <div className="mx-auto max-w-screen-2xl px-6 py-24 md:px-10 md:py-40">
         <Reveal>
           <SectionTitle mb={16} accentPeriod>
@@ -171,7 +97,7 @@ export function About() {
                       <t.Icon
                         aria-hidden
                         className="h-4 w-4 shrink-0"
-                        style={{ color: t.color }}
+                        style={t.color ? { color: t.color } : undefined}
                       />
                       {t.label}
                     </Pill>
@@ -181,8 +107,11 @@ export function About() {
               <div>
                 <Label mb={4}>Aside from developing software, I enjoy</Label>
                 <ul className="flex flex-wrap gap-2">
-                  {hobbies.map(({ icon, label }) => (
-                    <HobbyChip key={label} icon={icon} label={label} />
+                  {hobbies.map(({ icon, label, note }) => (
+                    <Pill key={label} variant="tag" as="li" tooltip={note}>
+                      <span aria-hidden>{icon}</span>
+                      {label}
+                    </Pill>
                   ))}
                 </ul>
               </div>

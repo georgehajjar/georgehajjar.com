@@ -1,10 +1,14 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
 @theme {
   --color-ink: #0a0a0f;
   --color-surface: #12121a;
   --color-mint: #8aff80;
   --color-purple: #7e64ff;
+  --color-fg: rgb(255 255 255);
 
   --font-display:
     -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui,
@@ -14,21 +18,41 @@
     sans-serif;
 }
 
+:root,
+[data-theme='dark'] {
+  --color-ink: #0a0a0f;
+  --color-surface: #12121a;
+  --color-mint: #8aff80;
+  --color-purple: #7e64ff;
+  --color-fg: rgb(255 255 255);
+}
+
+[data-theme='light'] {
+  --color-ink: #f6f5f2;
+  --color-surface: #ecebe6;
+  --color-mint: #2e8f4a;
+  --color-purple: #5b3fe5;
+  --color-fg: rgb(10 10 15);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-ink);
-  color: rgb(255 255 255 / 0.9);
+  color: rgb(from var(--color-fg) r g b / 0.9);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 400ms ease,
+    color 400ms ease;
 }
 
 ::selection {
   background: color-mix(in oklab, var(--color-mint) 40%, transparent);
-  color: white;
+  color: rgb(from var(--color-fg) r g b);
 }
 
 button:not(:disabled),

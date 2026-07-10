@@ -7,22 +7,25 @@ import {
   CardTitle,
   Chevron,
   ConnectMenu,
+  Counter,
   Display,
   Divider,
   ExternalArrow,
   Label,
   LiveDot,
   Meta,
+  NavItem,
   Pill,
   SectionTitle,
   Subhead,
   Tagline,
+  ThemeToggle,
 } from '../../components';
 type ThemeColor = 'ink' | 'surface' | 'mint' | 'purple';
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-t border-white/5 py-16">
+    <section className="border-fg/5 border-t py-16">
       <CardTitle mb={10}>{title}</CardTitle>
       {children}
     </section>
@@ -32,7 +35,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="grid grid-cols-1 gap-3 py-5 md:grid-cols-[220px_1fr] md:items-center md:gap-8">
-      <div className="text-xs tracking-[0.2em] text-white/40 uppercase">
+      <div className="text-fg/40 text-xs tracking-[0.2em] uppercase">
         {label}
       </div>
       <div className="flex flex-wrap items-center gap-4">{children}</div>
@@ -42,13 +45,13 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 
 function Swatch({ name, note }: { name: ThemeColor; note?: string }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+    <div className="border-fg/5 bg-fg/[0.02] rounded-2xl border p-4">
       <div
-        className="mb-3 h-20 w-full rounded-xl ring-1 ring-white/5"
+        className="ring-fg/5 mb-3 h-20 w-full rounded-xl ring-1"
         style={{ background: `var(--color-${name})` }}
       />
-      <div className="text-sm font-medium text-white">{name}</div>
-      {note && <div className="mt-1 text-xs text-white/40">{note}</div>}
+      <div className="text-fg text-sm font-medium">{name}</div>
+      {note && <div className="text-fg/40 mt-1 text-xs">{note}</div>}
     </div>
   );
 }
@@ -63,7 +66,7 @@ export function Stylesheet() {
       <div className="mx-auto max-w-screen-2xl px-6 py-16 md:px-10 md:py-24">
         <a
           href="/"
-          className="hover:text-mint text-sm text-white/50 transition-colors"
+          className="hover:text-mint text-fg/50 text-sm transition-colors"
         >
           ← Home
         </a>
@@ -150,9 +153,14 @@ export function Stylesheet() {
               <ExternalArrow />
             </Button>
           </Row>
-          <Row label="nav">
-            <Button variant="nav">Item</Button>
-            <Button variant="nav">Item</Button>
+        </Section>
+
+        <Section title="Nav">
+          <Row label="NavItem · default">
+            <NavItem label="about" />
+          </Row>
+          <Row label="NavItem · active">
+            <NavItem label="work" isActive />
           </Row>
         </Section>
 
@@ -185,9 +193,24 @@ export function Stylesheet() {
           </Row>
         </Section>
 
+        <Section title="Counter">
+          <Row label="Counter · integer with %">
+            <Counter target={20} suffix="%" />
+          </Row>
+          <Row label="Counter · decimal with prefix + suffix">
+            <Counter target={1} prefix="~$" suffix="M+" />
+          </Row>
+        </Section>
+
         <Section title="Menus">
           <Row label="Connect Menu">
             <ConnectMenu />
+          </Row>
+        </Section>
+
+        <Section title="Theme">
+          <Row label="Theme Toggle">
+            <ThemeToggle />
           </Row>
         </Section>
 

@@ -3,6 +3,7 @@ import { HiBars3, HiXMark } from 'react-icons/hi2';
 import { AnimatePresence, motion } from 'motion/react';
 import { Button } from '../Button';
 import { ConnectMenu } from '../ConnectMenu';
+import { NavItem } from '../NavItem';
 import { cn } from '../../lib/cn';
 import resume from '../../assets/resume.pdf';
 
@@ -17,6 +18,7 @@ function scrollTop() {
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hovering, setHovering] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const suppressActiveRef = useRef(false);
@@ -46,9 +48,23 @@ export function Header() {
   }, []);
 
   useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      const shouldHover = e.clientY < 80;
+      setHovering((prev) => (prev === shouldHover ? prev : shouldHover));
+    };
+    const onLeave = () => setHovering(false);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerleave', onLeave);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerleave', onLeave);
+    };
+  }, []);
+
+  useEffect(() => {
     const compute = () => {
       if (suppressActiveRef.current) return;
-      const marker = window.innerHeight * 0.35;
+      const marker = window.innerHeight * 0.7;
       const aboutTop =
         document.getElementById('about')?.getBoundingClientRect().top ??
         Infinity;
@@ -120,11 +136,11 @@ export function Header() {
   return (
     <>
       <header
-        aria-hidden={!scrolled}
+        aria-hidden={!scrolled && !hovering}
         className={cn(
-          'fixed inset-x-0 top-0 z-40 border-b border-white/5 backdrop-blur-xl transition-[opacity,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
-          scrolled
-            ? 'bg-ink/80 opacity-100 shadow-lg shadow-black/20'
+          'border-fg/5 fixed inset-x-0 top-0 z-40 border-b backdrop-blur-xl transition-[opacity,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          scrolled || hovering
+            ? 'bg-ink/80 shadow-fg/10 dark:shadow-fg/[0.04] opacity-100 shadow-lg'
             : 'bg-ink/60 pointer-events-none opacity-0',
         )}
       >
@@ -136,35 +152,23 @@ export function Header() {
         <div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-6 md:px-10">
           <button
             onClick={goHome}
-            className="font-display hover:text-mint text-lg font-medium tracking-tight text-white transition-colors"
+            className="font-display hover:text-mint text-fg text-lg font-medium tracking-tight transition-colors"
           >
             george<span className="text-mint">.</span>
           </button>
 
-          <div className="hidden items-center gap-6 md:flex">
-            <nav className="flex items-center gap-6">
-              <Button
-                variant="nav"
+          <div className="hidden items-center gap-3 md:flex">
+            <nav className="flex items-center gap-1">
+              <NavItem
+                label="about"
+                isActive={activeSection === 'about'}
                 onClick={() => go('about')}
-                className={
-                  activeSection === 'about'
-                    ? '!text-white after:!scale-x-100'
-                    : ''
-                }
-              >
-                about
-              </Button>
-              <Button
-                variant="nav"
+              />
+              <NavItem
+                label="work"
+                isActive={activeSection === 'work'}
                 onClick={() => go('work')}
-                className={
-                  activeSection === 'work'
-                    ? '!text-white after:!scale-x-100'
-                    : ''
-                }
-              >
-                work
-              </Button>
+              />
             </nav>
             <ConnectMenu />
           </div>
@@ -172,7 +176,7 @@ export function Header() {
           <button
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
-            className="hover:text-mint flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors md:hidden"
+            className="hover:text-mint text-fg/80 mr-12 flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden"
           >
             <HiBars3 className="h-6 w-6" />
           </button>
@@ -191,14 +195,14 @@ export function Header() {
             <div className="flex h-16 items-center justify-between px-6">
               <button
                 onClick={goHome}
-                className="font-display text-lg font-medium tracking-tight text-white"
+                className="font-display text-fg text-lg font-medium tracking-tight"
               >
                 george<span className="text-mint">.</span>
               </button>
               <button
                 onClick={() => setMenuOpen(false)}
                 aria-label="Close menu"
-                className="hover:text-mint flex h-10 w-10 items-center justify-center rounded-full text-white/80 transition-colors"
+                className="hover:text-mint text-fg/80 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
               >
                 <HiXMark className="h-6 w-6" />
               </button>
@@ -206,13 +210,13 @@ export function Header() {
             <nav className="flex flex-1 flex-col items-center justify-center gap-10 px-6">
               <button
                 onClick={() => go('about')}
-                className="font-display hover:text-mint text-5xl font-semibold tracking-tight text-white transition-colors"
+                className="font-display hover:text-mint text-fg text-5xl font-semibold tracking-tight transition-colors"
               >
                 about<span className="text-mint">.</span>
               </button>
               <button
                 onClick={() => go('work')}
-                className="font-display hover:text-mint text-5xl font-semibold tracking-tight text-white transition-colors"
+                className="font-display hover:text-mint text-fg text-5xl font-semibold tracking-tight transition-colors"
               >
                 work<span className="text-mint">.</span>
               </button>

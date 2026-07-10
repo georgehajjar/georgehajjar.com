@@ -1,46 +1,16 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { cn } from '../../lib/cn';
-import Particles, { initParticlesEngine } from '@tsparticles/react';
-import { loadSlim } from '@tsparticles/slim';
-import type { ISourceOptions } from '@tsparticles/engine';
 import {
   Button,
   Chevron,
   Display,
   Pill,
+  StarField,
   Subhead,
   Tagline,
 } from '../../components';
 import { workplaces } from '../Work/data';
-
-const particleOptions: ISourceOptions = {
-  fpsLimit: 60,
-  fullScreen: { enable: false },
-  particles: {
-    color: { value: '#ffffff' },
-    links: { enable: false },
-    move: {
-      direction: 'none',
-      enable: true,
-      outModes: { default: 'out' },
-      random: true,
-      speed: 0.2,
-      straight: false,
-    },
-    number: {
-      value: 90,
-      density: { enable: true, width: 900, height: 900 },
-    },
-    opacity: {
-      value: { min: 0.15, max: 0.75 },
-      animation: { enable: true, speed: 0.6, sync: false },
-    },
-    shape: { type: 'circle' },
-    size: { value: { min: 0.4, max: 1.8 } },
-  },
-  detectRetina: true,
-};
 
 const BEFORE = "hey, I'm ";
 const NAME = 'george';
@@ -71,25 +41,6 @@ const letterVariants = {
     transition: { duration: INTRO_TAIL_MS / 1000, ease: [0.16, 1, 0.3, 1] },
   },
 };
-
-const StarField = memo(function StarField() {
-  const reduceMotion = useReducedMotion();
-  const [inited, setInited] = useState(false);
-  useEffect(() => {
-    if (reduceMotion) return;
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => setInited(true));
-  }, [reduceMotion]);
-  if (reduceMotion || !inited) return null;
-  return (
-    <Particles
-      id="tsparticles"
-      options={particleOptions}
-      className="pointer-events-none fixed inset-0 -z-10"
-    />
-  );
-});
 
 const goToWork = () =>
   document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
@@ -125,7 +76,7 @@ const ScrollHint = memo(function ScrollHint() {
       animate={{ opacity: shown ? 1 : 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'hover:text-mint absolute bottom-8 left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center text-white/40 transition-colors md:bottom-10',
+        'hover:text-mint text-fg/40 absolute bottom-8 left-1/2 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center transition-colors md:bottom-10',
         !shown && 'pointer-events-none',
       )}
     >

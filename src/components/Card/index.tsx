@@ -24,8 +24,8 @@ type Props = LayoutProps & {
 
 /**
  * Glass surface card — the baseline for content blocks (Work content,
- * About profile card, etc). Locks the glass tone (`bg-white/[0.03]`
- * ring-1 ring-white/5) and offers typed rounding + padding tokens.
+ * About profile card, etc). Locks the glass tone (`bg-fg/[0.03]`
+ * ring-1 ring-fg/5) and offers typed rounding + padding tokens.
  */
 export function Card({
   children,
@@ -36,7 +36,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'bg-white/[0.03] ring-1 ring-white/5',
+        'bg-fg/[0.03] ring-fg/5 ring-1',
         roundedStyles[rounded],
         paddingStyles[padding],
         layoutClasses(layout),

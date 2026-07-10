@@ -1,6 +1,16 @@
 import { lazy, Suspense } from 'react';
-import { Footer, Header } from './components';
+import { Footer, Header, ThemeToggle } from './components';
 import { Landing, About, Work } from './views';
+
+function FloatingThemeToggle() {
+  return (
+    <div className="pointer-events-none fixed top-0 right-0 z-50 flex h-14 items-center pr-4">
+      <div className="pointer-events-auto">
+        <ThemeToggle />
+      </div>
+    </div>
+  );
+}
 
 const Stylesheet = lazy(() =>
   import('./views/Stylesheet').then((m) => ({ default: m.Stylesheet })),
@@ -11,9 +21,12 @@ export default function App() {
     const path = window.location.pathname;
     if (path === '/stylesheet') {
       return (
-        <Suspense fallback={null}>
-          <Stylesheet />
-        </Suspense>
+        <>
+          <Suspense fallback={null}>
+            <Stylesheet />
+          </Suspense>
+          <FloatingThemeToggle />
+        </>
       );
     }
     if (path !== '/') {
@@ -24,6 +37,7 @@ export default function App() {
   return (
     <>
       <Header />
+      <FloatingThemeToggle />
       <main>
         <Landing />
         <About />

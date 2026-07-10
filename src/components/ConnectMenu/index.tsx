@@ -74,7 +74,7 @@ export function ConnectMenu() {
         <div className="absolute top-full right-0 z-50 pt-2">
           <div
             role="menu"
-            className="bg-ink/95 flex min-w-[11rem] flex-col gap-0.5 rounded-2xl border border-white/10 p-2 shadow-lg shadow-black/30 backdrop-blur-xl"
+            className="bg-ink/95 border-fg/10 flex min-w-[11rem] flex-col gap-0.5 rounded-2xl border p-2 shadow-lg shadow-black/30 backdrop-blur-xl"
           >
             {items.map((item) => {
               const external = /^https?:\/\//.test(item.href);
@@ -86,7 +86,7 @@ export function ConnectMenu() {
                   rel={external ? 'noreferrer' : undefined}
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="hover:text-mint flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-white/85 transition-colors hover:bg-white/[0.04]"
+                  className="hover:text-mint text-fg/85 hover:bg-fg/[0.04] flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors"
                 >
                   <span className="inline-flex w-4 justify-center">
                     {item.icon}

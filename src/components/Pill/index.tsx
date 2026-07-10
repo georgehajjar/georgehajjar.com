@@ -17,7 +17,7 @@ type Props = {
 
 const variantClasses: Record<Variant, string> = {
   status: 'border-mint/30 bg-mint/10 px-3 py-1.5 text-xs text-mint',
-  tag: 'border-white/15 bg-white/[0.02] text-white/90 transition-colors duration-300 hover:border-mint/60 hover:text-mint',
+  tag: 'border-fg/15 bg-fg/[0.02] text-fg/90 transition-colors duration-300 hover:border-mint/60 hover:text-mint',
 };
 
 const tagSizeClasses: Record<Size, string> = {
@@ -35,10 +35,14 @@ export function Pill({
   children,
   variant = 'tag',
   size = 'md',
-  as: Component = 'div',
+  as = 'div',
   className,
   tooltip,
 }: Props) {
+  const Component = as as ElementType<{
+    className?: string;
+    children?: ReactNode;
+  }>;
   return (
     <Component
       className={cn(
@@ -54,7 +58,7 @@ export function Pill({
       {tooltip && (
         <span
           role="tooltip"
-          className="bg-ink/95 text-mint pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 rounded-md border border-white/10 px-2.5 py-1 text-xs whitespace-nowrap opacity-0 shadow-lg shadow-black/30 backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100"
+          className="bg-ink/95 text-mint border-fg/10 pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 rounded-md border px-2.5 py-1 text-xs whitespace-nowrap opacity-0 shadow-lg shadow-black/30 backdrop-blur-md transition-opacity duration-200 group-hover:opacity-100"
         >
           {tooltip}
         </span>

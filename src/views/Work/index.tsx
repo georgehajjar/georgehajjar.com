@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardTitle,
+  Counter,
   Divider,
   ExternalArrow,
   Meta,
@@ -12,31 +13,12 @@ import {
 } from '../../components';
 import { Reveal } from '../../lib/motion';
 import { cn } from '../../lib/cn';
-import { workplaces } from './data';
-
-const stackDescriptions: Record<string, string> = {
-  React: 'component-based UI',
-  TypeScript: 'type-safe javascript',
-  Angular: 'component framework',
-  Swift: 'Apple native mobile',
-  iOS: 'Apple mobile platform',
-  'REST APIs': 'backend integration',
-  'RESTful APIs': 'backend integration',
-  AWS: 'cloud infrastructure',
-  'Design Systems': 'shared components + tokens',
-  'QA Automation': 'automated testing',
-  Web: 'web platform',
-};
-
-const HIGHLIGHT_PATTERNS = [
-  // Numbers with weight — currency, percentages
-  `~?\\$\\d+(?:\\.\\d+)?[KM]?\\+?`,
-  `\\d+(?:\\.\\d+)?%\\+?`,
-  // Tech / stack terms
-  `\\b(?:React|TypeScript|Typescript|Angular|Swift|AWS|iOS|Android|Node|JavaScript|RESTful APIs|REST APIs)\\b`,
-  // Signature roles / phrases
-  `\\b(?:Frontend authority|Feature leader|Lead iOS developer|subject-matter expert)\\b`,
-];
+import {
+  HIGHLIGHT_PATTERNS,
+  stackDescriptions,
+  stackMeta,
+  workplaces,
+} from './data';
 
 const HIGHLIGHT_RE = new RegExp(
   `(${HIGHLIGHT_PATTERNS.map((p) => `(?:${p})`).join('|')})`,
@@ -46,19 +28,34 @@ const HIGHLIGHT_TEST = new RegExp(
   `^(?:${HIGHLIGHT_PATTERNS.map((p) => `(?:${p})`).join('|')})$`,
 );
 
+function parseAnimatable(
+  text: string,
+): { prefix: string; target: number; suffix: string } | null {
+  const m = text.match(/^(~?\$?)(\d+(?:\.\d+)?)(.*)$/);
+  if (!m) return null;
+  const target = parseFloat(m[2]);
+  if (Number.isNaN(target)) return null;
+  return { prefix: m[1], target, suffix: m[3] };
+}
+
 function HighlightedBullet({ text }: { text: string }) {
   const parts = text.split(HIGHLIGHT_RE);
   return (
     <>
-      {parts.map((part, i) =>
-        HIGHLIGHT_TEST.test(part) ? (
-          <span key={i} className="text-mint font-medium">
-            {part}
-          </span>
-        ) : (
-          <span key={i}>{part}</span>
-        ),
-      )}
+      {parts.map((part, i) => {
+        if (HIGHLIGHT_TEST.test(part)) {
+          const num = parseAnimatable(part);
+          if (num) {
+            return <Counter key={i} {...num} />;
+          }
+          return (
+            <span key={i} className="text-mint font-medium">
+              {part}
+            </span>
+          );
+        }
+        return <span key={i}>{part}</span>;
+      })}
     </>
   );
 }
@@ -80,7 +77,7 @@ export function Work() {
   const active = workplaces.find((w) => w.id === activeId) ?? workplaces[0];
 
   return (
-    <section id="work" className="bg-ink relative border-t border-white/5">
+    <section id="work" className="bg-ink border-fg/5 relative border-t">
       <div className="mx-auto max-w-screen-2xl px-6 py-24 md:px-10 md:py-40">
         <Reveal>
           <SectionTitle mb={16} accentPeriod>
@@ -92,10 +89,14 @@ export function Work() {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-2">
               <div
-                className="flex overflow-x-auto md:flex-col md:overflow-visible"
+                className="relative flex overflow-x-auto md:flex-col md:overflow-visible md:pl-0.5"
                 role="tablist"
                 aria-label="Workplaces"
               >
+                <span
+                  aria-hidden
+                  className="bg-fg/10 pointer-events-none absolute inset-y-0 left-0 hidden w-0.5 md:block"
+                />
                 {workplaces.map((w) => {
                   const isActive = w.id === activeId;
                   return (
@@ -105,22 +106,18 @@ export function Work() {
                       aria-selected={isActive}
                       onClick={() => setActiveId(w.id)}
                       className={cn(
-                        'relative flex items-center gap-3 px-4 py-3 pl-5 text-left text-sm whitespace-nowrap transition-colors',
-                        'border-b border-white/5 md:rounded-lg md:border-b-0',
+                        'relative flex items-center gap-3 px-4 py-3 text-left text-sm whitespace-nowrap transition-colors',
+                        'border-fg/5 border-b md:my-px md:rounded-r-lg md:border-b-0',
                         isActive
                           ? 'text-mint md:bg-mint/[0.04] font-medium'
-                          : 'text-white/50 hover:text-white/90 md:hover:bg-white/[0.03]',
+                          : 'text-fg/50 hover:text-fg/90 md:hover:bg-fg/[0.03]',
                       )}
                     >
-                      <span
-                        aria-hidden
-                        className="absolute inset-y-0 left-1.5 hidden w-0.5 bg-white/10 md:block"
-                      />
                       {isActive && (
                         <motion.span
                           layoutId="work-tab-indicator"
                           aria-hidden
-                          className="bg-mint absolute inset-y-0 left-1.5 hidden w-0.5 md:block"
+                          className="bg-mint pointer-events-none absolute inset-y-0 -left-0.5 hidden w-0.5 md:block"
                           transition={{
                             type: 'spring',
                             stiffness: 500,
@@ -156,9 +153,9 @@ export function Work() {
                     {active.roles.map((r, i) => (
                       <li
                         key={i}
-                        className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-white/5 pb-2 last:border-0"
+                        className="border-fg/5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b pb-2 last:border-0"
                       >
-                        <span className="text-sm text-white/85 md:text-base">
+                        <span className="text-fg/85 text-sm md:text-base">
                           {r.title}
                         </span>
                         <DateRange range={r.dateRange} />
@@ -167,17 +164,29 @@ export function Work() {
                   </ul>
 
                   <ul className="mt-6 flex flex-wrap gap-2">
-                    {active.stack.map((s) => (
-                      <Pill
-                        key={s}
-                        variant="tag"
-                        size="sm"
-                        as="li"
-                        tooltip={stackDescriptions[s]}
-                      >
-                        {s}
-                      </Pill>
-                    ))}
+                    {active.stack.map((s) => {
+                      const meta = stackMeta[s];
+                      return (
+                        <Pill
+                          key={s}
+                          variant="tag"
+                          size="sm"
+                          as="li"
+                          tooltip={stackDescriptions[s]}
+                        >
+                          {meta?.Icon && (
+                            <meta.Icon
+                              aria-hidden
+                              className="h-3.5 w-3.5 shrink-0"
+                              style={
+                                meta.color ? { color: meta.color } : undefined
+                              }
+                            />
+                          )}
+                          {s}
+                        </Pill>
+                      );
+                    })}
                   </ul>
 
                   <Divider my={8} />
@@ -195,7 +204,7 @@ export function Work() {
                         },
                       },
                     }}
-                    className="marker:text-mint ml-5 list-disc space-y-4 text-sm leading-relaxed text-white/70 md:text-base"
+                    className="marker:text-mint text-fg/70 ml-5 list-disc space-y-4 text-sm leading-relaxed md:text-base"
                   >
                     {active.info.map((info, idx) => (
                       <motion.li

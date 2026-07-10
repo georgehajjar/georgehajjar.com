@@ -3,8 +3,8 @@ import { Button } from '../Button';
 
 export function Footer() {
   return (
-    <footer className="bg-ink border-t border-white/5">
-      <div className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between px-6 text-sm text-white/40 md:px-10">
+    <footer className="bg-ink border-fg/5 border-t">
+      <div className="text-fg/40 mx-auto flex h-20 max-w-screen-2xl items-center justify-between px-6 text-sm md:px-10">
         <div>
           {new Date().getFullYear()} &copy;{' '}
           <a
@@ -13,7 +13,7 @@ export function Footer() {
           >
             Website
           </a>{' '}
-          by <span className="text-white/70">George Hajjar</span>
+          by <span className="text-fg/70">George Hajjar</span>
         </div>
         <div className="flex items-center gap-3">
           <Button

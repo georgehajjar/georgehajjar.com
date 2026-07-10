@@ -1,7 +1,7 @@
 import type { MouseEvent, ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
-type Variant = 'ghost' | 'link' | 'nav';
+type Variant = 'ghost' | 'link';
 type Size = 'sm' | 'lg';
 
 const base =
@@ -14,9 +14,8 @@ const sizeStyles: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   ghost:
-    'rounded-full border border-white/15 bg-white/[0.02] text-white/90 hover:border-mint/60 hover:text-mint',
+    'rounded-full border border-fg/15 bg-fg/[0.02] text-fg/90 hover:border-mint/60 hover:text-mint',
   link: 'text-mint hover:text-purple underline-offset-4 hover:underline',
-  nav: 'relative text-sm font-normal text-white/70 hover:text-white after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:origin-center after:scale-x-0 after:bg-mint after:transition-transform after:duration-300 hover:after:scale-x-100',
 };
 
 const isPill = (v: Variant) => v === 'ghost';

@@ -1,18 +1,49 @@
-export interface Role {
-  title: string;
-  dateRange: string;
-}
+import { FaAws } from 'react-icons/fa';
+import {
+  SiAngular,
+  SiApple,
+  SiReact,
+  SiSwift,
+  SiTypescript,
+} from 'react-icons/si';
+import type { StackMeta, Workplace } from './types';
 
-export interface Workplace {
-  id: number;
-  company: string;
-  website?: string;
-  location?: string;
-  current?: boolean;
-  roles: Role[];
-  stack: string[];
-  info: string[];
-}
+export const stackMeta: Record<string, StackMeta> = {
+  React: { Icon: SiReact, color: '#61DAFB' },
+  TypeScript: { Icon: SiTypescript, color: '#3178C6' },
+  Angular: { Icon: SiAngular, color: '#DD0031' },
+  Swift: { Icon: SiSwift, color: '#F05138' },
+  iOS: { Icon: SiApple },
+  AWS: { Icon: FaAws, color: '#FF9900' },
+};
+
+/** Tooltip descriptions surfaced when hovering a stack Pill. */
+export const stackDescriptions: Record<string, string> = {
+  React: 'component-based UI',
+  TypeScript: 'type-safe javascript',
+  Angular: 'component framework',
+  Swift: 'Apple native mobile',
+  iOS: 'Apple mobile platform',
+  'REST APIs': 'backend integration',
+  'RESTful APIs': 'backend integration',
+  AWS: 'cloud infrastructure',
+  'Design Systems': 'shared components + tokens',
+  'QA Automation': 'automated testing',
+  Web: 'web platform',
+};
+
+/** Regex fragments used to highlight (and animate) key phrases in bullet
+ * copy. Numbers get wrapped in `<Counter>`; other matches render as a
+ * static mint span. */
+export const HIGHLIGHT_PATTERNS = [
+  // Numbers with weight — currency, percentages
+  `~?\\$\\d+(?:\\.\\d+)?[KM]?\\+?`,
+  `\\d+(?:\\.\\d+)?%\\+?`,
+  // Tech / stack terms
+  `\\b(?:React|TypeScript|Typescript|Angular|Swift|AWS|iOS|Android|Node|JavaScript|RESTful APIs|REST APIs)\\b`,
+  // Signature roles / phrases
+  `\\b(?:Frontend authority|Feature leader|Lead iOS developer|subject-matter expert)\\b`,
+];
 
 export const workplaces: Workplace[] = [
   {

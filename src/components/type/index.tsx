@@ -50,7 +50,7 @@ export function Display({
   return (
     <motion.h1
       className={cn(
-        'font-display text-5xl leading-[0.95] font-semibold tracking-tight text-white md:text-7xl lg:text-8xl',
+        'font-display text-fg text-5xl leading-[0.95] font-semibold tracking-tight md:text-7xl lg:text-8xl',
         layoutClasses({ mb, mbMd, mt, mtMd, mx, my, maxW }),
       )}
       {...motionProps}
@@ -71,7 +71,7 @@ export function SectionTitle({
     <h2
       id={id}
       className={cn(
-        'font-display text-4xl font-semibold tracking-tight text-white md:text-5xl',
+        'font-display text-fg text-4xl font-semibold tracking-tight md:text-5xl',
         layoutClasses(layout),
       )}
     >
@@ -91,7 +91,7 @@ export function Subhead({
     <h3
       id={id}
       className={cn(
-        'font-display text-2xl leading-[1.15] font-medium tracking-tight text-white/85 md:text-4xl',
+        'font-display text-fg/85 text-2xl leading-[1.15] font-medium tracking-tight md:text-4xl',
         layoutClasses(layout),
       )}
     >
@@ -106,7 +106,7 @@ export function CardTitle({ children, id, ...layout }: Props) {
     <h4
       id={id}
       className={cn(
-        'font-display text-xl font-medium text-white md:text-2xl',
+        'font-display text-fg text-xl font-medium md:text-2xl',
         layoutClasses(layout),
       )}
     >
@@ -120,7 +120,7 @@ export function Tagline({ children, id, ...layout }: Props) {
     <p
       id={id}
       className={cn(
-        'text-lg font-light text-white/50 md:text-xl',
+        'text-fg/50 text-lg font-light md:text-xl',
         layoutClasses(layout),
       )}
     >
@@ -134,7 +134,7 @@ export function Body({ children, id, ...layout }: Props) {
     <p
       id={id}
       className={cn(
-        'text-base leading-relaxed text-white/70 md:text-lg',
+        'text-fg/70 text-base leading-relaxed md:text-lg',
         layoutClasses(layout),
       )}
     >
@@ -145,7 +145,7 @@ export function Body({ children, id, ...layout }: Props) {
 
 export function Meta({ children, ...layout }: Props) {
   return (
-    <div className={cn('text-sm text-white/40', layoutClasses(layout))}>
+    <div className={cn('text-fg/40 text-sm', layoutClasses(layout))}>
       {children}
     </div>
   );
@@ -163,7 +163,7 @@ export function Label({
   return (
     <Component
       className={cn(
-        'text-xs tracking-[0.2em] text-white/40 uppercase',
+        'text-fg/40 text-xs tracking-[0.2em] uppercase',
         layoutClasses(layout),
       )}
     >
