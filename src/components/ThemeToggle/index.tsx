@@ -25,6 +25,7 @@ export function ThemeToggle() {
       <motion.div
         aria-hidden
         className="bg-mint shadow-mint/30 absolute top-1 left-1 h-6 w-6 rounded-full shadow-md"
+        initial={false}
         animate={{ x: isLight ? 0 : 24 }}
         transition={{ type: 'spring', stiffness: 500, damping: 32 }}
       />

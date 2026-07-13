@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { Button } from '../Button';
 import { ConnectMenu } from '../ConnectMenu';
 import { NavItem } from '../NavItem';
+import { ThemeToggle } from '../ThemeToggle';
 import { cn } from '../../lib/cn';
 import resume from '../../assets/resume.pdf';
 
@@ -133,55 +134,77 @@ export function Header() {
     scrollTop();
   };
 
+  const barVisible = scrolled || hovering;
+
   return (
     <>
-      <header
-        aria-hidden={!scrolled && !hovering}
-        className={cn(
-          'border-fg/5 fixed inset-x-0 top-0 z-40 border-b backdrop-blur-xl transition-[opacity,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
-          scrolled || hovering
-            ? 'bg-ink/80 shadow-fg/10 dark:shadow-fg/[0.04] opacity-100 shadow-lg'
-            : 'bg-ink/60 pointer-events-none opacity-0',
-        )}
-      >
+      <div className="fixed inset-x-0 top-0 z-40">
         <div
           aria-hidden
-          className="bg-mint/70 absolute inset-x-0 top-0 h-px origin-left"
+          className={cn(
+            'border-fg/5 absolute inset-0 border-b backdrop-blur-xl transition-[opacity,background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+            barVisible
+              ? 'bg-ink/80 shadow-fg/10 dark:shadow-fg/[0.04] opacity-100 shadow-lg'
+              : 'bg-ink/60 opacity-0',
+          )}
+        />
+        <div
+          aria-hidden
+          className={cn(
+            'bg-mint/70 absolute inset-x-0 top-0 h-px origin-left transition-opacity duration-500',
+            barVisible ? 'opacity-100' : 'opacity-0',
+          )}
           style={{ transform: `scaleX(${progress})` }}
         />
-        <div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between px-6 md:px-10">
-          <button
-            onClick={goHome}
-            className="font-display hover:text-mint text-fg text-lg font-medium tracking-tight transition-colors"
-          >
-            george<span className="text-mint">.</span>
-          </button>
+        <div className="relative h-14">
+          <div className="mx-auto flex h-full max-w-screen-2xl items-center justify-between px-6 md:px-10">
+            <button
+              onClick={goHome}
+              aria-hidden={!barVisible}
+              className={cn(
+                'font-display hover:text-mint text-fg text-lg font-medium tracking-tight transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+                barVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
+              )}
+            >
+              george<span className="text-mint">.</span>
+            </button>
 
-          <div className="hidden items-center gap-3 md:flex">
-            <nav className="flex items-center gap-1">
-              <NavItem
-                label="about"
-                isActive={activeSection === 'about'}
-                onClick={() => go('about')}
-              />
-              <NavItem
-                label="work"
-                isActive={activeSection === 'work'}
-                onClick={() => go('work')}
-              />
-            </nav>
-            <ConnectMenu />
+            <div className="flex items-center gap-3">
+              <div
+                aria-hidden={!barVisible}
+                className={cn(
+                  'hidden items-center gap-3 transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:flex',
+                  barVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
+                )}
+              >
+                <nav className="flex items-center gap-1">
+                  <NavItem
+                    label="about"
+                    isActive={activeSection === 'about'}
+                    onClick={() => go('about')}
+                  />
+                  <NavItem
+                    label="work"
+                    isActive={activeSection === 'work'}
+                    onClick={() => go('work')}
+                  />
+                </nav>
+                <ConnectMenu />
+              </div>
+
+              <button
+                onClick={() => setMenuOpen(true)}
+                aria-label="Open menu"
+                className="hover:text-mint text-fg/80 flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden"
+              >
+                <HiBars3 className="h-6 w-6" />
+              </button>
+
+              <ThemeToggle />
+            </div>
           </div>
-
-          <button
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
-            className="hover:text-mint text-fg/80 mr-12 flex h-10 w-10 items-center justify-center rounded-full transition-colors md:hidden"
-          >
-            <HiBars3 className="h-6 w-6" />
-          </button>
         </div>
-      </header>
+      </div>
 
       <AnimatePresence>
         {menuOpen && (

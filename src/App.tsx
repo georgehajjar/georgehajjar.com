@@ -2,9 +2,9 @@ import { lazy, Suspense } from 'react';
 import { Footer, Header, ThemeToggle } from './components';
 import { Landing, About, Work } from './views';
 
-function FloatingThemeToggle() {
+function StylesheetThemeToggle() {
   return (
-    <div className="pointer-events-none fixed top-0 right-0 z-50 flex h-14 items-center pr-4">
+    <div className="pointer-events-none fixed top-0 right-0 z-50 flex h-14 items-center pr-4 md:pr-10">
       <div className="pointer-events-auto">
         <ThemeToggle />
       </div>
@@ -25,7 +25,7 @@ export default function App() {
           <Suspense fallback={null}>
             <Stylesheet />
           </Suspense>
-          <FloatingThemeToggle />
+          <StylesheetThemeToggle />
         </>
       );
     }
@@ -37,7 +37,6 @@ export default function App() {
   return (
     <>
       <Header />
-      <FloatingThemeToggle />
       <main>
         <Landing />
         <About />
